@@ -1,0 +1,1 @@
+# screenshot_observer_plugin
