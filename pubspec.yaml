@@ -1,7 +1,8 @@
 name: screenshot_observer_plugin
 description: A plugin created for ios and android
 version: 0.0.1
-homepage:
+homepage: https://github.com/BirbalJaat/screenshot_observer_plugin
+
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
