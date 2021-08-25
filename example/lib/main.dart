@@ -12,45 +12,23 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String text = "Ready for take screenshot.";
-  late ScreenshotObserverPlugin screenshotCallback;
+  String _platformVersion = 'Unknown';
 
   @override
   void initState() {
     super.initState();
-    initScreenshotCallback();
   }
 
-  //It must be created after permission is granted.
-  Future<void> initScreenshotCallback() async {
-    screenshotCallback = ScreenshotObserverPlugin();
-    screenshotCallback.addListenerCallback(() {
-      setState(() {
-        text = "Screenshot callback will trigger here...";
-      });
-    });
-
-  }
-
-
-  @override
-  void dispose() {
-    screenshotCallback.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Screenshot observer Plugin Example'),
+          title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text(text,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              )),
+          child: Text('Running on: $_platformVersion\n'),
         ),
       ),
     );
