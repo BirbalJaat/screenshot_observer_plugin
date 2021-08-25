@@ -6,6 +6,7 @@ import 'dart:ui';
 import 'package:flutter/services.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+
 class ScreenshotObserverPlugin {
   static const MethodChannel _channel =
       const MethodChannel('screenshot_observer_plugin');
