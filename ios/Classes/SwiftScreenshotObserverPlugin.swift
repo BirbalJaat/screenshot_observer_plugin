@@ -1,56 +1,64 @@
+//
+//  ScreenProtector.swift
+//  Runner
+//
+//  Created by VIDWATH IOS on 24/08/21.
+//
+
 import Flutter
 import UIKit
 
 
-public class SwiftScreenshotObserverPlugin: NSObject, FlutterPlugin {
+class SwiftScreenshotObserverPlugin : NSObject, FlutterPlugin {
+    static var channel: FlutterMethodChannel?
 
- static var channel: FlutterMethodChannel?
+    static var observer: NSObjectProtocol?;
 
-  static var observer: NSObjectProtocol?;
-  public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "screenshot_observer_plugin",
-    binaryMessenger: registrar.messenger())
+
+    public static func register(with registrar: FlutterPluginRegistrar) {
+      channel  = FlutterMethodChannel(name: "screenshot_observer_plugin", binaryMessenger: registrar.messenger())
       observer = nil;
-    let instance = SwiftScreenshotObserverPlugin()
+      let instance = SwiftScreenshotObserverPlugin()
       if let channel = channel {
-              registrar.addMethodCallDelegate(instance, channel: channel)
-            }
-  }
-
-  public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    if(call.method == "initialize"){
-           if(SwiftScreenshotObserverPlugin.observer != nil) {
-               NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
-               SwiftScreenshotObserverPlugin.observer = nil;
-           }
-           SwiftScreenshotObserverPlugin.observer = NotificationCenter.default.addObserver(
-             forName: NSNotification.Name.UIApplicationUserDidTakeScreenshot,
-             object: nil,
-             queue: .main) { notification in
-             if let channel = SwiftScreenshotObserverPlugin.channel {
-               channel.invokeMethod("onCallback", arguments: nil)
-             }
-
-             result("screen shot called")
-         }
-         result("initialize")
-       }else if(call.method == "dispose"){
-           if(SwiftScreenshotObserverPlugin.observer != nil) {
-               NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
-               SwiftScreenshotObserverPlugin.observer = nil;
-           }
-           result("dispose")
-       }else{
-         result("")
-       }
-  }
-
-  deinit {
-      if(SwiftScreenshotObserverPlugin.observer != nil) {
-          NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
-          SwiftScreenshotObserverPlugin.observer = nil;
+        registrar.addMethodCallDelegate(instance, channel: channel)
       }
+
+    }
+
+    public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
+      if(call.method == "initialize"){
+          if(SwiftScreenshotObserverPlugin.observer != nil) {
+              NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
+            SwiftScreenshotObserverPlugin.observer = nil;
+          }
+        SwiftScreenshotObserverPlugin.observer = NotificationCenter.default.addObserver(
+            forName: UIApplication.userDidTakeScreenshotNotification,
+            object: nil,
+            queue: .main) { notification in
+            if let channel = SwiftScreenshotObserverPlugin.channel {
+              channel.invokeMethod("onCallback", arguments: nil)
+            }
+
+            result("screen shot called")
+        }
+        result("initialize")
+      }else if(call.method == "dispose"){
+          if(SwiftScreenshotObserverPlugin.observer != nil) {
+              NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
+            SwiftScreenshotObserverPlugin.observer = nil;
+          }
+          result("dispose")
+      }else{
+        result("")
+      }
+    }
+
+    deinit {
+        if(SwiftScreenshotObserverPlugin.observer != nil) {
+            NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
+            SwiftScreenshotObserverPlugin.observer = nil;
+        }
+    }
   }
 
 
-}
