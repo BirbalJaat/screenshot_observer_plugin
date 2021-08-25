@@ -1,6 +1,4 @@
 //
-//  ScreenProtector.swift
-//  Runner
 //
 //  Created by VIDWATH IOS on 24/08/21.
 //
@@ -11,9 +9,9 @@ import UIKit
 
 class SwiftScreenshotObserverPlugin : NSObject, FlutterPlugin {
     static var channel: FlutterMethodChannel?
-
+      
     static var observer: NSObjectProtocol?;
-
+      
 
     public static func register(with registrar: FlutterPluginRegistrar) {
       channel  = FlutterMethodChannel(name: "screenshot_observer_plugin", binaryMessenger: registrar.messenger())
@@ -22,7 +20,7 @@ class SwiftScreenshotObserverPlugin : NSObject, FlutterPlugin {
       if let channel = channel {
         registrar.addMethodCallDelegate(instance, channel: channel)
       }
-
+      
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
@@ -52,7 +50,7 @@ class SwiftScreenshotObserverPlugin : NSObject, FlutterPlugin {
         result("")
       }
     }
-
+      
     deinit {
         if(SwiftScreenshotObserverPlugin.observer != nil) {
             NotificationCenter.default.removeObserver(SwiftScreenshotObserverPlugin.observer!);
