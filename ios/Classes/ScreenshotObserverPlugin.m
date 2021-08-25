@@ -10,6 +10,6 @@
 
 @implementation ScreenshotObserverPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftScreenshotObserverPlugin registerWithRegistrar:registrar];
+  [ScreenshotObserverPlugin registerWithRegistrar:registrar];
 }
 @end
